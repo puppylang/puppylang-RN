@@ -13,7 +13,13 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "infoPlist": {
+        "NSAppTransportSecurity": { "NSAllowsArbitraryLoads": true },
+        "NSCameraUsageDescription": "puppylang camera use",
+        "NSPhotoLibraryUsageDescription": "puppylang photo use"
+      },
+      "supportsTablet": true,
+      "flipper": true
     },
     "android": {
       "adaptiveIcon": {
