@@ -4,7 +4,7 @@ import { StackActions } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
 import { Route, WebviewRouter } from "../../../types/route";
 
-export default function Chat() {
+export default function Walk() {
   const navigation = useNavigation();
 
   const requestOnMessage = async (e: WebViewMessageEvent): Promise<void> => {
@@ -16,13 +16,12 @@ export default function Chat() {
     });
     navigation.dispatch(pushAction);
   };
-
   return (
     <View style={{ flex: 1 }}>
       <WebView
         onMessage={requestOnMessage}
         source={{
-          uri: Route.url + Route.posts,
+          uri: Route.url + Route.walk,
         }}
       />
     </View>

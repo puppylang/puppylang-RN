@@ -5,7 +5,7 @@ import { useNavigation } from "expo-router";
 
 import { Route, WebviewRouter } from "../../../types/route";
 
-export default function Profile() {
+export default function User() {
   const navigation = useNavigation();
 
   const requestOnMessage = async (e: WebViewMessageEvent): Promise<void> => {
@@ -22,7 +22,7 @@ export default function Profile() {
     <View style={{ flex: 1 }}>
       <WebView
         onMessage={requestOnMessage}
-        source={{ uri: Route.url + "/user" }}
+        source={{ uri: Route.url + Route.user }}
       />
     </View>
   );

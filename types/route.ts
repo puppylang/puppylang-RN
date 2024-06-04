@@ -1,10 +1,10 @@
 export enum Route {
-  // url = "http://192.168.219.102:3000",
-  // url = "http://192.168.219.103:3000",
   url = "http://localhost:3000",
-  profile = "/user",
+  // url = "https://fffc-119-64-77-52.ngrok-free.app",
+  user = "/user",
   chat = "/chat",
-  stroll = "/stroll",
+  walk = "/walk-role",
+  posts = "/posts",
 }
 
 export interface WebviewRouter {

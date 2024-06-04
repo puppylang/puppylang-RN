@@ -21,7 +21,7 @@ export default () => {
         }}
       />
       <Tabs.Screen
-        name="stroll"
+        name="walk"
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (
@@ -49,7 +49,7 @@ export default () => {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="user"
         options={{
           title: "프로필",
           tabBarStyle: {},

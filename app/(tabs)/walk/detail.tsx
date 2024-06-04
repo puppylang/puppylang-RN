@@ -7,9 +7,22 @@ import {
   ParamListBase,
 } from "@react-navigation/native";
 
-import { Route, RouterMethod, WebviewRouter } from "../types/route";
+import { Route, RouterMethod, WebviewRouter } from "../../../types/route";
+import { useEffect, useRef, useState } from "react";
 
-export default function WebviewStackDetail() {
+interface WebviewStackDetailProps {
+  headerTitle: string;
+  headerShown?: boolean;
+}
+
+export default function detail({
+  headerTitle,
+  headerShown = true,
+}: WebviewStackDetailProps) {
+  const [isClickedTabBtn, setIsClickedTabButton] = useState(false);
+
+  const webViewRef = useRef<WebView>(null);
+
   const params = useLocalSearchParams<{ url?: string }>();
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
@@ -22,7 +35,15 @@ export default function WebviewStackDetail() {
       navigation.dispatch(popAction);
       return;
     }
+    if (pushPage === "good") {
+      const pushAction = StackActions[type](pushPage || "detail", {
+        url,
+        isStack: isStack === undefined || isStack,
+      });
+      navigation.dispatch(pushAction);
 
+      return;
+    }
     const pushAction = StackActions[type](pushPage || "detail", {
       url,
       isStack: isStack === undefined || isStack,
@@ -30,17 +51,27 @@ export default function WebviewStackDetail() {
     navigation.dispatch(pushAction);
   };
 
+  useEffect(() => {
+    if (!webViewRef || !webViewRef.current) return;
+    if (!isClickedTabBtn) return;
+
+    webViewRef.current.postMessage("isClickedTabBtn");
+  }, [isClickedTabBtn]);
+
   return (
     <>
       <Tabs.Screen options={{ tabBarStyle: { display: "none" } }} />
       <Stack.Screen
         options={{
           headerShown: false,
+          headerBackTitle: undefined,
+          headerTitle,
           headerShadowVisible: false,
         }}
       />
       <View style={{ flex: 1 }}>
         <WebView
+          ref={webViewRef}
           onMessage={requestOnMessage}
           source={{ uri: Route.url + params.url }}
           sharedCookiesEnabled

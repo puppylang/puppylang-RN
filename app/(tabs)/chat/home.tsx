@@ -16,13 +16,12 @@ export default function Chat() {
     });
     navigation.dispatch(pushAction);
   };
-
   return (
     <View style={{ flex: 1 }}>
       <WebView
         onMessage={requestOnMessage}
         source={{
-          uri: Route.url + Route.posts,
+          uri: Route.url + Route.chat,
         }}
       />
     </View>
