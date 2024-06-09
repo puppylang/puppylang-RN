@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "my-app",
+    "name": "퍼피랑",
     "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,13 +13,14 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.puppylang",
+      "buildNumber": "0.0.0",
       "infoPlist": {
         "NSAppTransportSecurity": { "NSAllowsArbitraryLoads": true },
         "NSCameraUsageDescription": "puppylang camera use",
         "NSPhotoLibraryUsageDescription": "puppylang photo use"
       },
-      "supportsTablet": true,
-      "flipper": true
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
