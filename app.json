@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "퍼피랑",
-    "slug": "my-app",
+    "slug": "puppylang",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,16 +9,27 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#C8E6F2"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "com.puppylang",
+      "bundleIdentifier": "puppylang.com",
       "buildNumber": "0.0.0",
       "infoPlist": {
-        "NSAppTransportSecurity": { "NSAllowsArbitraryLoads": true },
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        },
         "NSCameraUsageDescription": "puppylang camera use",
-        "NSPhotoLibraryUsageDescription": "puppylang photo use"
+        "NSPhotoLibraryUsageDescription": "puppylang photo use",
+        "NSLocationWhenInUseUsageDescription": "현재 위치에 접근하기 위해 권한이 필요합니다.",
+        "NSWidgetWantsLocation": true,
+        "NSExceptionDomains": {
+          "https://puppylang.netlify.app": {
+            "NSIncludesSubdomains": true,
+            "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+            "NSTemporaryExceptionMinimumTLSVersion": "TLSv1.0"
+          }
+        }
       },
       "supportsTablet": false
     },
@@ -32,6 +43,14 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": ["expo-router"],
-    "scheme": "myapp"
+    "scheme": "myapp",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1fb9e823-debc-4264-82e3-2bcf6bcd526c"
+      }
+    }
   }
 }
