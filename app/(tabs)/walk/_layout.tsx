@@ -7,7 +7,12 @@ export default () => {
   return (
     <>
       <Tabs.Screen
-        options={{ tabBarStyle: { display: hidesTab ? "none" : "flex" } }}
+        options={{
+          tabBarStyle: {
+            position: "absolute",
+            display: hidesTab ? "none" : "flex",
+          },
+        }}
       />
       <Stack initialRouteName="home">
         <Stack.Screen name="home" options={{ headerShown: false }} />

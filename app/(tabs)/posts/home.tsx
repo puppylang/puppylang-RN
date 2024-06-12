@@ -1,10 +1,10 @@
 import { View } from "react-native";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
 import { StackActions } from "@react-navigation/native";
-import { useNavigation } from "expo-router";
+import { Tabs, useNavigation } from "expo-router";
 import { Route, WebviewRouter } from "../../../types/route";
 
-export default function Chat() {
+export default function Post() {
   const navigation = useNavigation();
 
   const requestOnMessage = async (e: WebViewMessageEvent): Promise<void> => {
@@ -19,6 +19,7 @@ export default function Chat() {
 
   return (
     <View style={{ flex: 1 }}>
+      <Tabs.Screen options={{ tabBarStyle: { display: "none" } }} />
       <WebView
         onMessage={requestOnMessage}
         source={{
