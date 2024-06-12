@@ -1,6 +1,5 @@
 export enum Route {
   url = "https://puppylang.netlify.app",
-  // url = "http://localhost:3000",
   user = "/user",
   chat = "/chat",
   walk = "/walk-role",
