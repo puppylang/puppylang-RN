@@ -19,8 +19,8 @@
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         },
-        "NSCameraUsageDescription": "puppylang camera use",
-        "NSPhotoLibraryUsageDescription": "puppylang photo use",
+        "NSCameraUsageDescription": "카메라에 접근하려면 사진 권한을 허용해야 합니다.",
+        "NSPhotoLibraryUsageDescription": "앨범에 접근하려면 사진 권한을 허용해야 합니다.",
         "NSLocationWhenInUseUsageDescription": "현재 위치에 접근하기 위해 권한이 필요합니다.",
         "NSWidgetWantsLocation": true,
         "NSExceptionDomains": {
