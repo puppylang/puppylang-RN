@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { View } from "react-native";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
 import { useNavigation } from "expo-router";
@@ -8,6 +8,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Route, WebviewRouter } from "../types/route";
 
 export default function StartPage() {
+  const webviewRef = useRef<WebView>(null);
+
   const navigation = useNavigation();
 
   const requestOnMessage = async (e: WebViewMessageEvent): Promise<void> => {
@@ -30,6 +32,9 @@ export default function StartPage() {
     (async () => {
       const accessToken = await AsyncStorage.getItem("token");
       if (!accessToken) return;
+      webviewRef.current?.injectJavaScript(
+        `document.cookie = 'token=${accessToken};path=/; SameSite=None; Secure'`
+      );
       const pushAction = StackActions.replace("(tabs)");
       navigation.dispatch(pushAction);
     })();
@@ -38,9 +43,11 @@ export default function StartPage() {
   return (
     <View style={{ flex: 1 }}>
       <WebView
+        ref={webviewRef}
         source={{ uri: Route.url }}
-        onMessage={requestOnMessage}
-        sharedCookiesEnabled
+        javaScriptEnabled={true}
+        originWhitelist={["*"]}
+        onMessage={(event) => requestOnMessage(event)}
       />
     </View>
   );
