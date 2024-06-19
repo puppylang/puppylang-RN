@@ -10,6 +10,7 @@ export interface WebviewRouter {
   url: string;
   type: RouterMethod;
 
+  token?: string;
   pushPage?: string;
   isStack?: boolean;
 }
