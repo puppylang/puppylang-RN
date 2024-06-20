@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
 import { useNavigation } from "expo-router";
@@ -8,6 +8,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Route, WebviewRouter } from "../types/route";
 
 export default function StartPage() {
+  const [accessToken, setAccessToken] = useState("");
+
   const webviewRef = useRef<WebView>(null);
 
   const navigation = useNavigation();
@@ -30,11 +32,9 @@ export default function StartPage() {
 
   useEffect(() => {
     (async () => {
-      const accessToken = await AsyncStorage.getItem("token");
-      if (!accessToken) return;
-      webviewRef.current?.injectJavaScript(
-        `document.cookie = 'token=${accessToken};path=/; SameSite=None; Secure'`
-      );
+      const token = await AsyncStorage.getItem("token");
+      if (!token) return;
+      setAccessToken(token || "");
       const pushAction = StackActions.replace("(tabs)");
       navigation.dispatch(pushAction);
     })();
@@ -44,10 +44,16 @@ export default function StartPage() {
     <View style={{ flex: 1 }}>
       <WebView
         ref={webviewRef}
-        source={{ uri: Route.url }}
+        source={{
+          headers: {
+            cookie: `token=${accessToken};path=/; Secure; SameSite=None`,
+          },
+          uri: Route.url,
+        }}
         javaScriptEnabled={true}
         originWhitelist={["*"]}
         onMessage={(event) => requestOnMessage(event)}
+        sharedCookiesEnabled
       />
     </View>
   );
