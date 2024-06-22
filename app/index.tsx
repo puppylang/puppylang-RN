@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Route, WebviewRouter } from "../types/route";
 
-export default function StartPage() {
+export default function index() {
   const [accessToken, setAccessToken] = useState("");
 
   const webviewRef = useRef<WebView>(null);
@@ -25,7 +25,6 @@ export default function StartPage() {
         isStack: true,
       }
     );
-
     await AsyncStorage.setItem("token", token || "");
     navigation.dispatch(pushAction);
   };
