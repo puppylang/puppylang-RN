@@ -1,9 +1,40 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Animated, Text } from "react-native";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import EventSource from "react-native-sse";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default () => {
+  const [hasNotReadedMessage, setHasNotReadedMessage] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const token = await AsyncStorage.getItem("token");
+      if (!token) return;
+
+      const SSE_URL = __DEV__
+        ? "http://localhost:8000/chat/sse"
+        : "https://mass-bonnie-puppylang-server-accb847f.koyeb.app/chat/sse";
+      const serverSentEvents = new EventSource(`${SSE_URL}?token=${token}`, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      serverSentEvents.addEventListener("open", () => {
+        console.log("open!!", token);
+      });
+
+      serverSentEvents.addEventListener("message", (event) => {
+        const { data } = event;
+        if (!data) return;
+        const { hasNotReadedMessage } = JSON.parse(data);
+        setHasNotReadedMessage(hasNotReadedMessage);
+      });
+    })();
+  }, []);
+
   return (
     <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
@@ -46,6 +77,16 @@ export default () => {
           tabBarLabel: ({ focused }) => (
             <Text style={{ color: focused ? "#383838" : "#c7c7c7" }}>채팅</Text>
           ),
+          tabBarBadge: "",
+          tabBarBadgeStyle: {
+            backgroundColor: "#6AC9E5",
+            display: hasNotReadedMessage ? "flex" : "none",
+            opacity: 0.8,
+            minWidth: 13,
+            height: 13,
+            left: 1,
+            top: 5,
+          },
         }}
       />
       <Tabs.Screen
