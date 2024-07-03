@@ -22,9 +22,6 @@ export default () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      serverSentEvents.addEventListener("open", () => {
-        console.log("open!!", token);
-      });
 
       serverSentEvents.addEventListener("message", (event) => {
         const { data } = event;
