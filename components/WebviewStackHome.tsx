@@ -1,17 +1,17 @@
 import { useNavigation } from "expo-router";
 import WebView, { WebViewMessageEvent } from "react-native-webview";
+import { View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackActions, CommonActions } from "@react-navigation/native";
 
-import { Route, WebviewRouter } from "../types/route";
-import { View } from "react-native";
+import { Route, WebviewRequestType, WebviewType } from "../types/route";
 
 export default function StackHome({ url }: { url: string }) {
   const navigation = useNavigation();
 
   const requestOnMessage = async (e: WebViewMessageEvent): Promise<void> => {
-    const nativeEvent = JSON.parse(e.nativeEvent.data) as WebviewRouter;
-    const { url, pushPage } = nativeEvent;
+    const nativeEvent = JSON.parse(e.nativeEvent.data) as WebviewRequestType;
+    const { url, pushPage, token, type } = nativeEvent;
     const isLogout = pushPage === "index";
 
     if (isLogout) {
@@ -25,7 +25,21 @@ export default function StackHome({ url }: { url: string }) {
       return;
     }
 
-    const pushAction = StackActions.push(pushPage || "detail", {
+    if (type === WebviewType.UpdateToken) {
+      console.log(token);
+      await AsyncStorage.setItem("token", token || "");
+      const good = await AsyncStorage.getItem("token");
+      console.log("good=", good);
+      return;
+    }
+
+    if (type === WebviewType.Back) {
+      const popAction = StackActions.pop(1);
+      navigation.dispatch(popAction);
+      return;
+    }
+
+    const pushAction = StackActions[type](pushPage || "detail", {
       url,
       isStack: true,
     });

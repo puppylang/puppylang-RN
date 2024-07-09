@@ -5,7 +5,7 @@ import { useNavigation } from "expo-router";
 import { StackActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Route, WebviewRouter } from "../types/route";
+import { Route, WebviewRequestType } from "../types/route";
 
 export default function index() {
   const [accessToken, setAccessToken] = useState("");
@@ -14,8 +14,8 @@ export default function index() {
 
   const navigation = useNavigation();
 
-  const requestOnMessage = async (e: WebViewMessageEvent): Promise<void> => {
-    const nativeEvent = JSON.parse(e.nativeEvent.data) as WebviewRouter;
+  const requestOnMessage = async (e: WebViewMessageEvent) => {
+    const nativeEvent = JSON.parse(e.nativeEvent.data) as WebviewRequestType;
     const { url, token } = nativeEvent;
 
     const pushAction = StackActions.replace(
@@ -25,7 +25,10 @@ export default function index() {
         isStack: true,
       }
     );
-    await AsyncStorage.setItem("token", token || "");
+
+    if (token) {
+      await AsyncStorage.setItem("token", token || "");
+    }
     navigation.dispatch(pushAction);
   };
 

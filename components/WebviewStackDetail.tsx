@@ -7,17 +7,24 @@ import {
   ParamListBase,
 } from "@react-navigation/native";
 
-import { Route, RouterMethod, WebviewRouter } from "../types/route";
+import { Route, WebviewType, WebviewRequestType } from "../types/route";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function WebviewStackDetail() {
   const params = useLocalSearchParams<{ url?: string }>();
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
-  const requestOnMessage = (e: WebViewMessageEvent) => {
-    const nativeEvent = JSON.parse(e.nativeEvent.data) as WebviewRouter;
-    const { url, type, pushPage, isStack } = nativeEvent;
+  const requestOnMessage = async (e: WebViewMessageEvent) => {
+    const nativeEvent = JSON.parse(e.nativeEvent.data) as WebviewRequestType;
+    const { url, type, pushPage, isStack, token } = nativeEvent;
 
-    if (type === RouterMethod.Back) {
+    if (type === WebviewType.UpdateToken) {
+      await AsyncStorage.setItem("token", token || "");
+
+      return;
+    }
+
+    if (type === WebviewType.Back) {
       const popAction = StackActions.pop(1);
       navigation.dispatch(popAction);
       return;
