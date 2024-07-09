@@ -6,17 +6,18 @@ export enum Route {
   posts = "/posts",
 }
 
-export interface WebviewRouter {
+export interface WebviewRequestType {
   url: string;
-  type: RouterMethod;
+  type: WebviewType;
 
   token?: string;
   pushPage?: string;
   isStack?: boolean;
 }
 
-export enum RouterMethod {
+export enum WebviewType {
   Push = "push",
   Replace = "replace",
   Back = "back",
+  UpdateToken = "updateToken",
 }
